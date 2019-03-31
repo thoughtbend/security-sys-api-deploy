@@ -16,10 +16,22 @@ spec:
     spec:
       containers:
       - name: security-sys-api-nonprod-pod
-        image: mnolan98/security-sys-api:0.0.8
+        image: mnolan98/security-sys-api:0.0.18
 #        imagePullPolicy: IfNotPresent
+        
         ports:
         - containerPort: 8080
+        
+        volumeMounts: 
+        - mountPath: /app/config/log4j2.xml
+          subPath: log4j2.xml
+          name: log4j2-xml-file
+          readOnly: true
+        - mountPath: /app/config/application-nonprodserver.properties
+          subPath: application-nonprodserver.properties
+          name: application-properties-file
+          readOnly: true
+        
         livenessProbe: 
           httpGet:
             port: 8080
@@ -39,4 +51,10 @@ spec:
             secretKeyRef:
               name: security-db-creds
               key: password
-  
+      volumes:
+      - name: log4j2-xml-file
+        configMap:
+          name: sec-sys-api-nonprod-log4j2-xml
+      - name: application-properties-file
+        configMap:
+          name: sec-sys-api-nonprod-application-properties

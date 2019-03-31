@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d %p %C{1.} [%t] %m%n" />
+        </Console>
+    </Appenders>
+ 
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="warn">
+            <AppenderRef ref="Console" />
+        </Root>
+ 
+        <!-- LOG "com.baeldung*" at TRACE level -->
+        <Logger name="com.thoughtbend" level="info"></Logger>
+        <Logger name="org.hibernate" level="info"></Logger>
+    </Loggers>
+ 
+</Configuration>
