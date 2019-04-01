@@ -1,0 +1,5 @@
+mysql:
+  imageVersion: 5.7.25
+
+db:
+  rootpass: password
