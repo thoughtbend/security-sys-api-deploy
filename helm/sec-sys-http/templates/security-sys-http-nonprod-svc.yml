@@ -14,6 +14,7 @@ spec:
   ports:
   - port: 443
     nodePort: 30003
+#    targetPort: 443
     protocol: TCP
   selector:
     app: security-sys-http-nonprod

@@ -40,6 +40,14 @@ spec:
           timeoutSeconds: 2
           failureThreshold: 3
           initialDelaySeconds: 5
+        readinessProbe: 
+          httpGet:
+            port: 8080
+            path: /api/security-sys-api-health
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+          initialDelaySeconds: 30
         env:
         - name: SECDB_USER_ACCT
           valueFrom:
