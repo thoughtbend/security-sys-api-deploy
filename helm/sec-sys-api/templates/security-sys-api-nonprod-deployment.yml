@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: security-sys-api-nonprod-pod
-        image: mnolan98/security-sys-api:0.0.18
+        image: mnolan98/security-sys-api:{{.Values.imageVersion}}
 #        imagePullPolicy: IfNotPresent
         
         ports:
@@ -59,6 +59,16 @@ spec:
             secretKeyRef:
               name: security-db-creds
               key: password
+        - name: SECLDAP_MGR_DN
+          valueFrom:
+            secretKeyRef:
+              name: security-ldap-creds
+              key: managerDn
+        - name: SECLDAP_MGR_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: security-ldap-creds
+              key: managerPassword
       volumes:
       - name: log4j2-xml-file
         configMap:
