@@ -81,15 +81,15 @@ spec:
 
       volumes:
       - name: ldap-data
-#        hostPath:
-#          path: "/Users/mikenolan/container_home/ldap-data/db"
-        persistentVolumeClaim:
-          claimName: security-ldap-data-pv-claim
+        hostPath:
+          path: "/data/ldap-data/db"
+#        persistentVolumeClaim:
+#          claimName: security-ldap-data-pv-claim
       - name: ldap-config
-#        hostPath:
-#          path: "/Users/mikenolan/container_home/ldap-data/config"
-        persistentVolumeClaim:
-            claimName: security-ldap-config-pv-claim
+        hostPath:
+          path: "/data/ldap-data/config"
+#        persistentVolumeClaim:
+#            claimName: security-ldap-config-pv-claim
 #      - name: ldap-certs
 #        hostPath:
 #          path: "/Users/mikenolan/container_home/ldap-data/certs"
