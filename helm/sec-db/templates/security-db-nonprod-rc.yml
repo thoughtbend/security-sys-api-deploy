@@ -23,7 +23,7 @@ spec:
         - containerPort: 3306
         env: 
         - name: MYSQL_ROOT_PASSWORD
-          value: {{.Values.rootpass}}
+          value: {{.Values.db.rootpass}}
       volumes:
       - name: security-db-volume
         persistentVolumeClaim:

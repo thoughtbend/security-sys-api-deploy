@@ -1,9 +1,49 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: tb-ldap-data-pv-volume
+  labels:
+    type: local
+    vname: tb-ldap-data-pv-volume
+    env: nonprod
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/tb-ldap-data/db"
+    type: DirectoryOrCreate
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: tb-ldap-config-pv-volume
+  labels:
+    type: local
+    vname: tb-ldap-config-pv-volume
+    env: nonprod
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/tb-ldap-data/config"
+    type: DirectoryOrCreate
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: security-ldap-data-pv-claim
 spec:
-#  storageClassName: manual
+  storageClassName: standard
+  selector:
+    matchLabels:
+      vname: tb-ldap-data-pv-volume
+      env: nonprod
   accessModes:
   - ReadWriteOnce
   resources:
@@ -15,7 +55,11 @@ apiVersion: v1
 metadata:
   name: security-ldap-config-pv-claim
 spec:
-#  storageClassName: manual
+  storageClassName: standard
+  selector:
+    matchLabels:
+      vname: tb-ldap-config-pv-volume
+      env: nonprod
   accessModes:
   - ReadWriteOnce
   resources:
