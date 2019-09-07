@@ -1,0 +1,7 @@
+api:
+  name: spring-boot-api
+  environment: local
+  replicaCount: 1
+  imageName: spring-boot-api
+  imageVersion: 1.0.0
+  httpPort: 8080

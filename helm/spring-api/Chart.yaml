@@ -1,0 +1,5 @@
+apiVersion: v1
+appVersion: "1.0"
+description: A Spring API Helm Chart for Kubernetes
+name: spring-api
+version: 0.1.0

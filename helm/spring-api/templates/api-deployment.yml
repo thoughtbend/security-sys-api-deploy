@@ -1,0 +1,78 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: {{.Values.api.name}}-deployment
+spec:
+  replicas: {{.Values.api.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Values.api.name}}
+      targetEnv: {{.Values.api.environment}}
+  template:
+    metadata:
+      labels:
+        app: {{.Values.api.name}}
+        targetEnv: {{.Values.api.environment}}
+    spec:
+      containers:
+      - name: {{.Values.api.name}}-container
+        image: {{.Values.api.imageName}}:{{.Values.api.imageVersion}}
+#        imagePullPolicy: IfNotPresent
+        
+        ports:
+        - containerPort: {{.Values.api.httpPort}}
+        
+        volumeMounts: 
+        - mountPath: /app/config/log4j2.xml
+          subPath: log4j2.xml
+          name: log4j2-xml-file
+          readOnly: true
+        - mountPath: /app/config/application-nonprodserver.properties
+          subPath: application-nonprodserver.properties
+          name: application-properties-file
+          readOnly: true
+        
+        livenessProbe: 
+          httpGet:
+            port: {{.Values.api.httpPort}}
+            path: /api/security-sys-api-health
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
+          initialDelaySeconds: 5
+        readinessProbe: 
+          httpGet:
+            port: {{.Values.api.httpPort}}
+            path: /api/security-sys-api-health
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+          initialDelaySeconds: 30
+        env:
+        - name: SECDB_USER_ACCT
+          valueFrom:
+            secretKeyRef:
+              name: security-db-creds
+              key: username
+        - name: SECDB_USER_PASS
+          valueFrom:
+            secretKeyRef:
+              name: security-db-creds
+              key: password
+        - name: SECLDAP_MGR_DN
+          valueFrom:
+            secretKeyRef:
+              name: security-ldap-creds
+              key: managerDn
+        - name: SECLDAP_MGR_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: security-ldap-creds
+              key: managerPassword
+      volumes:
+      - name: log4j2-xml-file
+        configMap:
+          name: sec-sys-api-nonprod-log4j2-xml
+      - name: application-properties-file
+        configMap:
+          name: sec-sys-api-nonprod-application-properties
